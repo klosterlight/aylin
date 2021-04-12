@@ -18,4 +18,10 @@ RSpec.describe "Categories", type: :request do
 
     include_examples "paginated list"
   end
+
+  describe "GET /categories/:id"
+
+  describe "POST /categories"
+
+  describe "PUT /categories/:id"
 end
