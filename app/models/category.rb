@@ -1,3 +1,3 @@
 class Category < ApplicationRecord
-  enum active_status: [:inactive, :active]
+  include Activable
 end
