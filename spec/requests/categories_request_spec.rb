@@ -41,7 +41,43 @@ RSpec.describe "Categories", type: :request do
     end
   end
 
-  describe "POST /categories"
+  describe "POST /categories" do
+    context "valid category" do
+      before(:all) do
+        @category = FactoryBot.attributes_for(:category)
+
+        post categories_path, params: { category: @category }
+        @response_data = JSON.parse(response.body)
+      end
+
+      it "should respond with :created" do
+        expect(response.status).to eq 201
+      end
+
+      it "should have created a new category" do
+        expect(@response_data).to have_key("id")
+      end
+    end
+
+    context "invalid category" do
+      before(:all) do
+        @category = FactoryBot.attributes_for(:category)
+        @category[:name] = ""
+
+        post categories_path, params: { category: @category }
+        @response_data = JSON.parse(response.body)
+      end
+
+      it "should response with :unprocessable_entity" do
+        expect(response.status).to eq 422
+      end
+
+      it "should have an error message" do
+        expect(@response_data).to have_key("messages")
+        expect(@response_data["messages"]["name"]).to include "can't be blank"
+      end
+    end
+  end
 
   describe "PUT /categories/:id"
 end
